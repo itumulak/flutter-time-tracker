@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:time_tracker/widgets/welcome_headline.dart';
-import 'package:time_tracker/widgets/welcome_login.dart';
+import 'package:time_tracker/widgets/register_form.dart';
+import 'package:time_tracker/widgets/register_headline.dart';
+import 'package:time_tracker/widgets/register_login.dart';
 
 import '../widgets/btn_action.dart';
 import '../widgets/input_field.dart';
 import '../widgets/welcome_forgot_password.dart';
 import '../widgets/welcome_signup.dart';
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
 
-  static const String route = '/welcome';
+  static const String route = '/register';
 
   @override
   Widget build(BuildContext context) {
@@ -47,22 +48,18 @@ class WelcomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        WelcomeHeadline(),
+                        RegisterHeadline(),
                         SizedBox(
                           height: 30.0,
                         ),
-                        WelcomeLoginForm(),
+                        RegisterForm(),
                       ],
                     ),
                   ),
                   const SizedBox(
                     height: 20.0,
                   ),
-                  const WelcomeForgotPassword(),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  const WelcomeSignUp(),
+                  const RegisterLogin(),
                 ],
               ),
             ),

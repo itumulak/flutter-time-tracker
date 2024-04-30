@@ -2,9 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:time_tracker/screen/register_screen.dart';
+import 'package:time_tracker/screen/welcome_screen.dart';
 
-class WelcomeSignUp extends StatelessWidget {
-  const WelcomeSignUp({
+class RegisterLogin extends StatelessWidget {
+  const RegisterLogin({
     super.key,
   });
 
@@ -14,7 +15,7 @@ class WelcomeSignUp extends StatelessWidget {
       text: TextSpan(
         children: [
           const TextSpan(
-            text: 'Do you have an account? ',
+            text: 'Already have an account? ',
             style: TextStyle(
               color: Colors.black,
             ),
@@ -22,10 +23,10 @@ class WelcomeSignUp extends StatelessWidget {
           TextSpan(
             recognizer: TapGestureRecognizer()..onTap = () {
               if (context.mounted) {
-                Navigator.pushNamed(context, RegisterScreen.route);
+                Navigator.pushNamed(context, WelcomeScreen.route);
               }
             },
-            text: 'Sign up',
+            text: 'Login',
             style: const TextStyle(
               color: Colors.blueAccent,
             ),
