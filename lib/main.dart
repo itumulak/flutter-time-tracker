@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:time_tracker/screen/register_screen.dart';
 import 'package:time_tracker/screen/tracker_screen.dart';
 import 'package:time_tracker/screen/welcome_screen.dart';
 
@@ -14,6 +15,7 @@ class TimeTracker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: true,
@@ -35,6 +37,8 @@ class TimeTracker extends StatelessWidget {
         switch (settings.name) {
           case TrackerScreen.route:
             return CupertinoPageRoute(builder: (_) => const TrackerScreen());
+          case RegisterScreen.route:
+            return CupertinoPageRoute(builder: (_) => const RegisterScreen());
           case WelcomeScreen.route:
           default:
             return CupertinoPageRoute(builder: (_) => const WelcomeScreen());
