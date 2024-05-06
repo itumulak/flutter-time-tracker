@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:time_tracker/widgets/input_field.dart';
+
+import '../models/contracts.dart';
 
 class TrackerActions extends StatefulWidget {
   const TrackerActions({super.key});
@@ -23,6 +26,8 @@ class _TrackerActionsState extends State<TrackerActions> {
 
   @override
   Widget build(BuildContext context) {
+    final contractProvider = Provider.of<Contracts>(context);
+
     return Container(
       color: active ? const Color(0xF5D5EED4) : const Color(0xF5C9C2C2),
       padding: const EdgeInsets.all(
@@ -87,28 +92,12 @@ class _TrackerActionsState extends State<TrackerActions> {
                     fontSize: 15,
                   ),
                   isExpanded: true,
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'Quantum Innovations Co.',
-                      child: Text('Quantum Innovations Co.'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Stellar Solutions Ltd.',
-                      child: Text('Stellar Solutions Ltd.'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Nebula Dynamics Inc.',
-                      child: Text('Nebula Dynamics Inc.'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Zenith Nexus Technologies',
-                      child: Text('Zenith Nexus Technologies'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Virtuoso Ventures Group',
-                      child: Text('Virtuoso Ventures Group'),
-                    ),
-                  ],
+                  items: contractProvider.list.map(
+                          (e) => DropdownMenuItem(
+                            value: e.company,
+                            child: Text(e.company),
+                          ),
+                        ).toList(),
                   onChanged: (value) {
                     if (value != null) {
                       setState(() {
