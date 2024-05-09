@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/widgets/input_field.dart';
@@ -13,8 +16,11 @@ class TrackerActions extends StatefulWidget {
 
 class _TrackerActionsState extends State<TrackerActions> {
   bool active = false;
+  int _countdown = 0;
+  late Timer _timer;
   String workAppointed = '';
   String workDescription = '';
+  String workDuration = '00:00:00';
 
   @override
   void initState() {
@@ -22,6 +28,36 @@ class _TrackerActionsState extends State<TrackerActions> {
     super.initState();
 
     workAppointed = 'Virtuoso Ventures Group';
+  }
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(oneSec, (Timer timer) {
+      if ( active == true ) {
+        setState(() {
+          _countdown++;
+          workDuration = formattedTime(_countdown);
+        });
+      }
+      else {
+        setState(() {
+          timer.cancel();
+        });
+      }
+    });
+  }
+
+  String formattedTime(int time) {
+    final int hour = (time / 3600).floor();
+    final int minute = ((time / 3600 - hour) * 60 ).floor();
+    final int second = ((((time / 3600 - hour) * 60) - minute) * 60).floor();
+    final String setTime = [
+      hour.toString().padLeft(2, "0"),
+      minute.toString().padLeft(2, "0"),
+      second.toString().padLeft(2, '0'),
+    ].join(':');
+
+    return setTime;
   }
 
   @override
@@ -38,9 +74,9 @@ class _TrackerActionsState extends State<TrackerActions> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                '0 hrs 00m',
-                style: TextStyle(
+              Text(
+                workDuration,
+                style: const TextStyle(
                   fontSize: 32.0,
                 ),
               ),
@@ -51,6 +87,15 @@ class _TrackerActionsState extends State<TrackerActions> {
                   setState(() {
                     active = state;
                   });
+
+                  if ( active == true ) {
+                    startTimer();
+                  }
+                  else {
+                    if (kDebugMode) {
+                      print(_countdown);
+                    }
+                  }
                 },
               )
             ],
@@ -93,10 +138,14 @@ class _TrackerActionsState extends State<TrackerActions> {
                   ),
                   isExpanded: true,
                   items: contractProvider.list.map(
-                          (e) => DropdownMenuItem(
-                            value: e.company,
-                            child: Text(e.company),
-                          ),
+                          (e) {
+                            int index = 0;
+
+                            return DropdownMenuItem(
+                              value: e.company, //index++
+                              child: Text(e.company),
+                            );
+                          },
                         ).toList(),
                   onChanged: (value) {
                     if (value != null) {
@@ -105,7 +154,7 @@ class _TrackerActionsState extends State<TrackerActions> {
                       });
                     }
                   },
-                  value: 'Virtuoso Ventures Group',
+                  value: workAppointed,
                 ),
           const SizedBox(
             height: 10,
@@ -131,7 +180,6 @@ class _TrackerActionsState extends State<TrackerActions> {
                   },
                   validator: () {},
                   placeholder: 'What are you working on?',
-
                 ),
         ],
       ),

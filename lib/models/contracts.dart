@@ -4,6 +4,8 @@ import 'package:time_tracker/models/task.dart';
 import 'contract.dart';
 
 class Contracts extends ChangeNotifier {
+  bool isTimerRunning = false;
+  int activeContract = 0;
   List<Contract> contracts = <Contract>[
     Contract(
       company: 'Quantum Innovations Co.'
@@ -33,4 +35,16 @@ class Contracts extends ChangeNotifier {
   ];
 
   List<Contract> get list => contracts;
+  int get getActiveContract => activeContract;
+  bool get getTimerStatus => isTimerRunning;
+
+  void updateActiveContract(int index) {
+    activeContract = index;
+    notifyListeners();
+  }
+
+  void toggleActive() {
+    isTimerRunning != isTimerRunning;
+    notifyListeners();
+  }
 }
