@@ -47,4 +47,8 @@ class Contracts extends ChangeNotifier {
     isTimerRunning != isTimerRunning;
     notifyListeners();
   }
+
+  List<Task>? getTasks(index) {
+      return contracts[index].tasks;
+  }
 }

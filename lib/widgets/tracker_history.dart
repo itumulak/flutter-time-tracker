@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/contracts.dart';
+import '../models/task.dart';
 
 class TrackerHistory extends StatelessWidget {
   const TrackerHistory({super.key});
@@ -10,13 +11,39 @@ class TrackerHistory extends StatelessWidget {
   Widget build(BuildContext context) {
     final contractProvider = Provider.of<Contracts>(context);
 
+    Widget? taskLists(index) {
+      List<Task>? list = contractProvider.getTasks(index);
+
+      if ( list != null ) {
+        return Column(
+          children: list.asMap().entries.map((e) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Doing research on the API'),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.play_arrow),
+                      onPressed: () {},
+                      iconSize: 18.0,
+                    ),
+                    const Text('00:35:04'),
+                  ],
+                ),
+              ],
+            );
+          }).toList(),
+        );
+      }
+
+      return null;
+    }
+
     return Column(
-      children: contractProvider.list.map((e) {
+      children: contractProvider.list.asMap().entries.map((e) {
         return Column(
           children: [
-            const SizedBox(
-              height: 10,
-            ),
             Column(
               children: [
                 Container(
@@ -29,7 +56,7 @@ class TrackerHistory extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        e.company,
+                        e.value.company,
                         style: const TextStyle(
                           fontSize: 18.0,
                         ),
@@ -45,48 +72,12 @@ class TrackerHistory extends StatelessWidget {
                     vertical: 10.0,
                   ),
                   alignment: Alignment.centerLeft,
-                  child: Column(
-                    children: [
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Doing research on the API'),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.play_arrow),
-                                    onPressed: () {},
-                                    iconSize: 18.0,
-                                  ),
-                                  Text('00:35:04'),
-                                ],
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Testing the API'),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.play_arrow),
-                                    onPressed: () {},
-                                    iconSize: 18.0,
-                                  ),
-                                  Text('01:04:10'),
-                                ],
-                              )
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
+                  child: taskLists(e.key),
                 ),
               ],
+            ),
+            const SizedBox(
+              height: 10,
             ),
           ],
         );
