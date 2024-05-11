@@ -36,8 +36,14 @@ class TrackerHistory extends StatelessWidget {
           }).toList(),
         );
       }
-
-      return null;
+      else {
+        return const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('No tasks yet'),
+          ],
+        );
+      }
     }
 
     return Column(
