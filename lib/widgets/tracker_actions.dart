@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker/func/format_duration.dart';
 import 'package:time_tracker/widgets/input_field.dart';
 
 import '../models/contracts.dart';
@@ -36,7 +37,7 @@ class _TrackerActionsState extends State<TrackerActions> {
       if ( active == true ) {
         setState(() {
           _countdown++;
-          workDuration = formattedTime(_countdown);
+          workDuration = formattedDuration(_countdown);
         });
       }
       else {
@@ -45,19 +46,6 @@ class _TrackerActionsState extends State<TrackerActions> {
         });
       }
     });
-  }
-
-  String formattedTime(int time) {
-    final int hour = (time / 3600).floor();
-    final int minute = ((time / 3600 - hour) * 60 ).floor();
-    final int second = ((((time / 3600 - hour) * 60) - minute) * 60).floor();
-    final String setTime = [
-      hour.toString().padLeft(2, "0"),
-      minute.toString().padLeft(2, "0"),
-      second.toString().padLeft(2, '0'),
-    ].join(':');
-
-    return setTime;
   }
 
   @override

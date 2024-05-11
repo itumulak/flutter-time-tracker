@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker/func/format_duration.dart';
 
 import '../models/contracts.dart';
 import '../models/task.dart';
@@ -20,7 +22,7 @@ class TrackerHistory extends StatelessWidget {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Doing research on the API'),
+                Text(e.value.description),
                 Row(
                   children: [
                     IconButton(
@@ -28,7 +30,7 @@ class TrackerHistory extends StatelessWidget {
                       onPressed: () {},
                       iconSize: 18.0,
                     ),
-                    const Text('00:35:04'),
+                    Text(formattedDuration(e.value.duration)),
                   ],
                 ),
               ],
@@ -48,6 +50,9 @@ class TrackerHistory extends StatelessWidget {
 
     return Column(
       children: contractProvider.list.asMap().entries.map((e) {
+        // TODO: get total duration of a contract.
+        int totalDuration = contractProvider.getTotalTasksDuration(e.key);
+
         return Column(
           children: [
             Column(
@@ -67,7 +72,9 @@ class TrackerHistory extends StatelessWidget {
                           fontSize: 18.0,
                         ),
                       ),
-                      const Text('01:39:14')
+                      Text(
+                          totalDuration.toString()
+                      ),
                     ],
                   ),
                 ),

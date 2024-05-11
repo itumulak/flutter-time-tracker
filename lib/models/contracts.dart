@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:time_tracker/models/task.dart';
 
@@ -50,5 +51,22 @@ class Contracts extends ChangeNotifier {
 
   List<Task>? getTasks(index) {
       return contracts[index].tasks;
+  }
+
+  int getTotalTasksDuration(index) {
+    List<Task>? tasks = getTasks(index);
+    int totalDuration = 1;
+
+    if ( tasks != null ) {
+      tasks.asMap().entries.map((e) {
+        if (kDebugMode) {
+          print(e.value.description);
+        }
+
+        totalDuration += e.value.duration;
+      });
+    }
+
+    return totalDuration;
   }
 }
