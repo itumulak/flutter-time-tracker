@@ -25,7 +25,7 @@ class Contracts extends ChangeNotifier {
       tasks: [
         Task(
           duration: 2104,
-          description: 'Doing research on the API.',
+          description: 'Doing research on the API...',
         ),
         Task(
           duration: 3850,
@@ -49,23 +49,17 @@ class Contracts extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Task>? getTasks(index) {
+  List<Task>? getTasks(int index) {
       return contracts[index].tasks;
   }
 
   int getTotalTasksDuration(index) {
     List<Task>? tasks = getTasks(index);
-    int totalDuration = 1;
+    int totalDuration = 0;
 
-    if ( tasks != null ) {
-      tasks.asMap().entries.map((e) {
-        if (kDebugMode) {
-          print(e.value.description);
-        }
-
-        totalDuration += e.value.duration;
-      });
-    }
+    tasks?.forEach((element) {
+      totalDuration = totalDuration + element.duration;
+    });
 
     return totalDuration;
   }

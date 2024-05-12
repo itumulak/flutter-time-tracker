@@ -48,10 +48,22 @@ class TrackerHistory extends StatelessWidget {
       }
     }
 
+    // String totalCompanyDuration(int index) {
+    //   List<Task>? tasks = contractProvider.getTasks(4);
+    //   int totalDuration = 0;
+    //
+    //   tasks?.forEach((element) {
+    //     totalDuration = totalDuration + element.duration;
+    //   });
+    //
+    //   return totalDuration.toString();
+    // }
+
     return Column(
       children: contractProvider.list.asMap().entries.map((e) {
-        // TODO: get total duration of a contract.
-        int totalDuration = contractProvider.getTotalTasksDuration(e.key);
+        int contractIndex = e.key;
+        String companyName = e.value.company;
+        int totalDuration = contractProvider.getTotalTasksDuration(contractIndex);
 
         return Column(
           children: [
@@ -67,13 +79,13 @@ class TrackerHistory extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        e.value.company,
+                        companyName,
                         style: const TextStyle(
                           fontSize: 18.0,
                         ),
                       ),
                       Text(
-                          totalDuration.toString()
+                          formattedDuration(totalDuration)
                       ),
                     ],
                   ),
@@ -85,7 +97,7 @@ class TrackerHistory extends StatelessWidget {
                     vertical: 10.0,
                   ),
                   alignment: Alignment.centerLeft,
-                  child: taskLists(e.key),
+                  child: taskLists(contractIndex),
                 ),
               ],
             ),
