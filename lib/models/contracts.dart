@@ -5,9 +5,9 @@ import 'package:time_tracker/models/task.dart';
 import 'contract.dart';
 
 class Contracts extends ChangeNotifier {
-  bool isTimerRunning = false;
-  int activeContract = 0;
-  List<Contract> contracts = <Contract>[
+  int _activeContract = 0;
+  bool _isTimerRunning = false;
+  final List<Contract> _contracts = <Contract>[
     Contract(
       company: 'Quantum Innovations Co.'
     ),
@@ -35,22 +35,22 @@ class Contracts extends ChangeNotifier {
     )
   ];
 
-  List<Contract> get list => contracts;
-  int get getActiveContract => activeContract;
-  bool get getTimerStatus => isTimerRunning;
+  List<Contract> get list => _contracts;
+  int get getActiveContractId => _activeContract;
+  bool get getTimerStatus => _isTimerRunning;
 
   void updateActiveContract(int index) {
-    activeContract = index;
+    _activeContract = index;
     notifyListeners();
   }
 
-  void toggleActive() {
-    isTimerRunning != isTimerRunning;
+  void toggleActive(bool state) {
+    _isTimerRunning = state;
     notifyListeners();
   }
 
   List<Task>? getTasks(int index) {
-      return contracts[index].tasks;
+      return _contracts[index].tasks;
   }
 
   int getTotalTasksDuration(index) {
@@ -58,9 +58,20 @@ class Contracts extends ChangeNotifier {
     int totalDuration = 0;
 
     tasks?.forEach((element) {
-      totalDuration = totalDuration + element.duration;
+      totalDuration += element.duration;
     });
 
     return totalDuration;
   }
+
+  void addTaskToContract(int index, Task task ) {
+    _contracts[index].tasks?.add(
+      Task(
+        duration: task.duration,
+        description: task.description
+      )
+    );
+  }
+
+  String getActiveContractName(int index) => _contracts[index].company;
 }

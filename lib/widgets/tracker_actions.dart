@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:time_tracker/func/format_duration.dart';
 import 'package:time_tracker/widgets/input_field.dart';
 
+import '../models/contract.dart';
 import '../models/contracts.dart';
 
 class TrackerActions extends StatefulWidget {
@@ -17,9 +18,7 @@ class TrackerActions extends StatefulWidget {
 
 class _TrackerActionsState extends State<TrackerActions> {
   bool active = false;
-  int _countdown = 0;
   late Timer _timer;
-  String workAppointed = '';
   String workDescription = '';
   String workDuration = '00:00:00';
 
@@ -27,33 +26,39 @@ class _TrackerActionsState extends State<TrackerActions> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    workAppointed = 'Virtuoso Ventures Group';
   }
 
-  void startTimer() {
+  // Controller for the contract timer.
+  void toggleTimer(bool status) {
+    int countdown = 0;
     const oneSec = Duration(seconds: 1);
-    _timer = Timer.periodic(oneSec, (Timer timer) {
-      if ( active == true ) {
+
+    if ( status != true ) {
+      _timer = Timer.periodic(oneSec, (Timer timer) {
         setState(() {
-          _countdown++;
-          workDuration = formattedDuration(_countdown);
+          countdown++;
+          workDuration = formattedDuration(countdown);
         });
-      }
-      else {
-        setState(() {
-          timer.cancel();
-        });
-      }
-    });
+      });
+    }
+    else {
+      setState(() {
+        _timer.cancel();
+      });
+    }
+
   }
 
   @override
   Widget build(BuildContext context) {
     final contractProvider = Provider.of<Contracts>(context);
+    bool isTimerRunning = contractProvider.getTimerStatus;
+    int activeContractId = contractProvider.getActiveContractId;
+    String activeContractName = contractProvider.getActiveContractName(activeContractId);
+    List<Contract> contracts = contractProvider.list;
 
     return Container(
-      color: active ? const Color(0xF5D5EED4) : const Color(0xF5C9C2C2),
+      color: isTimerRunning ? const Color(0xF5D5EED4) : const Color(0xF5C9C2C2),
       padding: const EdgeInsets.all(
         10.0,
       ),
@@ -69,21 +74,14 @@ class _TrackerActionsState extends State<TrackerActions> {
                 ),
               ),
               Switch(
-                value: active,
+                value: isTimerRunning,
                 activeColor: Colors.lightGreen,
                 onChanged: (state) {
                   setState(() {
-                    active = state;
+                    contractProvider.toggleActive(state);
                   });
 
-                  if ( active == true ) {
-                    startTimer();
-                  }
-                  else {
-                    if (kDebugMode) {
-                      print(_countdown);
-                    }
-                  }
+                  toggleTimer(isTimerRunning);
                 },
               )
             ],
@@ -91,12 +89,12 @@ class _TrackerActionsState extends State<TrackerActions> {
           const SizedBox(
             height: 10,
           ),
-          active
+          isTimerRunning
               ? Container(
                   padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    workAppointed,
+                    activeContractName,
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                       color: Colors.black,
@@ -125,29 +123,27 @@ class _TrackerActionsState extends State<TrackerActions> {
                     fontSize: 15,
                   ),
                   isExpanded: true,
-                  items: contractProvider.list.map(
+                  items: contracts.asMap().entries.map(
                           (e) {
-                            int index = 0;
-
                             return DropdownMenuItem(
-                              value: e.company, //index++
-                              child: Text(e.company),
+                              value: e.key,
+                              child: Text(e.value.company),
                             );
                           },
                         ).toList(),
                   onChanged: (value) {
                     if (value != null) {
                       setState(() {
-                        workAppointed = value;
+                        contractProvider.updateActiveContract(value);
                       });
                     }
                   },
-                  value: workAppointed,
+                  value: activeContractId,
                 ),
           const SizedBox(
             height: 10,
           ),
-          active
+          isTimerRunning
               ? Container(
                   padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   alignment: Alignment.centerLeft,

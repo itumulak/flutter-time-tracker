@@ -48,17 +48,6 @@ class TrackerHistory extends StatelessWidget {
       }
     }
 
-    // String totalCompanyDuration(int index) {
-    //   List<Task>? tasks = contractProvider.getTasks(4);
-    //   int totalDuration = 0;
-    //
-    //   tasks?.forEach((element) {
-    //     totalDuration = totalDuration + element.duration;
-    //   });
-    //
-    //   return totalDuration.toString();
-    // }
-
     return Column(
       children: contractProvider.list.asMap().entries.map((e) {
         int contractIndex = e.key;
