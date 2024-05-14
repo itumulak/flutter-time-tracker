@@ -8,6 +8,7 @@ import 'package:time_tracker/widgets/input_field.dart';
 
 import '../models/contract.dart';
 import '../models/contracts.dart';
+import '../models/task.dart';
 
 class TrackerActions extends StatefulWidget {
   const TrackerActions({super.key});
@@ -28,27 +29,6 @@ class _TrackerActionsState extends State<TrackerActions> {
     super.initState();
   }
 
-  // Controller for the contract timer.
-  void toggleTimer(bool status) {
-    int countdown = 0;
-    const oneSec = Duration(seconds: 1);
-
-    if ( status != true ) {
-      _timer = Timer.periodic(oneSec, (Timer timer) {
-        setState(() {
-          countdown++;
-          workDuration = formattedDuration(countdown);
-        });
-      });
-    }
-    else {
-      setState(() {
-        _timer.cancel();
-      });
-    }
-
-  }
-
   @override
   Widget build(BuildContext context) {
     final contractProvider = Provider.of<Contracts>(context);
@@ -56,6 +36,30 @@ class _TrackerActionsState extends State<TrackerActions> {
     int activeContractId = contractProvider.getActiveContractId;
     String activeContractName = contractProvider.getActiveContractName(activeContractId);
     List<Contract> contracts = contractProvider.list;
+
+    // Controller for the contract timer.
+    void toggleTimer(bool status) {
+      const oneSec = Duration(seconds: 1);
+
+      if ( status != true ) {
+        setState(() {
+          workDuration = '00:00:00';
+        });
+
+        _timer = Timer.periodic(oneSec, (Timer timer) {
+          setState(() {
+            workDuration = formattedDuration(timer.tick);
+          });
+        });
+      }
+      else {
+        setState(() {
+          _timer.cancel();
+          Task task = Task(description: workDescription, duration: _timer.tick);
+          contractProvider.addTaskToContract(activeContractId, task);
+        });
+      }
+    }
 
     return Container(
       color: isTimerRunning ? const Color(0xF5D5EED4) : const Color(0xF5C9C2C2),

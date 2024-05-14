@@ -9,16 +9,20 @@ class Contracts extends ChangeNotifier {
   bool _isTimerRunning = false;
   final List<Contract> _contracts = <Contract>[
     Contract(
-      company: 'Quantum Innovations Co.'
+      company: 'Quantum Innovations Co.',
+      tasks: []
     ),
     Contract(
-      company: 'Stellar Solutions Ltd.'
+      company: 'Stellar Solutions Ltd.',
+      tasks: []
     ),
     Contract(
-      company: 'Nebula Dynamics Inc.'
+      company: 'Nebula Dynamics Inc.',
+      tasks: []
     ),
     Contract(
-      company: 'Zenith Nexus Technologies'
+      company: 'Zenith Nexus Technologies',
+      tasks: []
     ),
     Contract(
       company: 'Virtuoso Ventures Group',
@@ -71,6 +75,8 @@ class Contracts extends ChangeNotifier {
         description: task.description
       )
     );
+
+    notifyListeners();
   }
 
   String getActiveContractName(int index) => _contracts[index].company;
