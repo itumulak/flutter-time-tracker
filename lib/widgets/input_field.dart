@@ -7,6 +7,7 @@ class InputField extends StatelessWidget {
   final Function onChange;
   final TextInputType textInputType;
   final String? inputValue;
+  final Icon? icon;
 
   const InputField({
     super.key,
@@ -14,6 +15,7 @@ class InputField extends StatelessWidget {
     this.obscureText = false,
     this.textInputType = TextInputType.text,
     this.inputValue,
+    this.icon,
     required this.onChange,
     required this.validator,
   });
@@ -28,9 +30,15 @@ class InputField extends StatelessWidget {
       obscureText: obscureText,
       style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
+        prefixIcon: Padding(
+          padding: const EdgeInsetsDirectional.only(start: 15.0, end: 10.0),
+          child: icon ?? icon,
+        ),
         hintText: placeholder,
-        contentPadding:
-            const EdgeInsets.all(10.0),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 10.0,
+          horizontal: 40.0,
+        ),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(3.0),

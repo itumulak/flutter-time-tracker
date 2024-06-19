@@ -14,6 +14,7 @@ class WelcomeLoginForm extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: InputField(
+              icon: const Icon(Icons.email),
               placeholder: 'Enter your email address.',
               textInputType: TextInputType.emailAddress,
               onChange: (value) {},
@@ -26,6 +27,7 @@ class WelcomeLoginForm extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: InputField(
+              icon: const Icon(Icons.key),
               placeholder: 'Enter your password.',
               textInputType: TextInputType.visiblePassword,
               obscureText: true,

@@ -19,6 +19,10 @@ class BtnAction extends StatelessWidget {
         color: Colors.blueAccent,
         borderRadius: BorderRadius.circular(2.0),
         child: MaterialButton(
+          padding: const EdgeInsets.only(
+            top: 20,
+            bottom: 20,
+          ),
           onPressed: () => onPressed(),
           minWidth: double.infinity,
           child: Text(

@@ -20,9 +20,9 @@ class TimeTracker extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blueGrey,
+          seedColor: const Color(0xff9053c7),
           brightness: Brightness.light,
-          background: const Color(0xfff4f5f7)
+          background: const Color(0xff9053c7)
         ),
         textTheme: const TextTheme(
           displayLarge: TextStyle(
